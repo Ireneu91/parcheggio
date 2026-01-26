@@ -44,13 +44,14 @@ class ParkingFloor{
 
         // quelle che se ne vanno non possono essere più di quelle parcheggiate
         if($num > $this->cars){
-            return $this->cars - $num;
+            $differenza = $num - $this->cars;
+            return $differenza;
         }
         
         // aggiorno le macchine facendo:
         // macchine parcheggiate - quelle che se ne vanno 
-        $now_cars = $this->cars - $num;
-        return $now_cars;   
+        $this->cars = $this->cars - $num;
+        return $this->cars;   
     }
 
     
