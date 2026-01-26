@@ -2,32 +2,29 @@
 
 class Parking{
 
-    private int $car;
-    private int $place;
-    private int $empty_place;
-
-    // ----- costruttore
-    public function __construct(int $place)
-    {
-        $this->place = $place;
-        $this->empty_place = $place;
-
-        // alla fine penso alle eccezioni
-        throw new \Exception('Not implemented');
-    }
-    
-    //----- validatori
-
-
+    // proprietà: parcheggio composto da piani
+    private array $floors;
 
     //-------- metodi
 
-    /*
-    public function cars_count(): int{
-        
+    // rende un piano, che è un oggetto di classe ParkingFloor
+    public function add_floor(ParkingFloor $floor): void{
+        $this->floors[] = $floor;
     }
 
- 
+
+    public function cars_count(): int{
+        $totalCars = 0;
+        foreach($this->floors as $floor){
+            // per ogni piano conto le macchine
+            $carsFloor = $floor->cars_count();
+            // aggiungo al totale
+            $totalCars = $totalCars + $carsFloor;
+        }
+        return $totalCars;
+    }
+
+ /*
     public function capacity_count(): int{
         return $this->capacity_count();
     }
@@ -57,6 +54,19 @@ class Parking{
     public function remove_reservation(): void{
         
     }
+
+    public function open_floor($floor): void{
+        
+    }
+
+    public function close_floor($floor): void{
+        
+    }
+
+    public function report(): string{
+        
+    }
+
     */
 
 }

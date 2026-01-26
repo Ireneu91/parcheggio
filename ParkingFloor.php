@@ -41,48 +41,24 @@ class ParkingFloor{
 
     // rende il numero di auto che non riesce a togliere
     public function leave_cars(int $num): int{
+        // togliere le auto che può togliere
+        // restituire quelle che non riesce a togliere
 
         // quelle che se ne vanno non possono essere più di quelle parcheggiate
         if($num > $this->cars){
             $differenza = $num - $this->cars;
+            // dopo avrò sicuramente 0 macchine
+            $this->cars = 0;
+            // e devi dire quante macchine non sono riuscito a togliere
             return $differenza;
         }
         
         // aggiorno le macchine facendo:
         // macchine parcheggiate - quelle che se ne vanno 
         $this->cars = $this->cars - $num;
-        return $this->cars;   
+        return 0;   
     }
 
     
-    /*
-    public function cars_distribution(): array{
-        
-    }
 
-    public function add_reservation(): void{
-        
-    }
-
-    public function reservation_count(): int{
-        
-    }
-
-    public function remove_reservation(): void{
-        
-    }
-
-    public function open_floor($floor): void{
-        
-    }
-
-    public function close_floor($floor): void{
-        
-    }
-
-    public function report(): string{
-        
-    }
-
-    */
 }
