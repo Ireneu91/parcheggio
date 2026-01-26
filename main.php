@@ -30,16 +30,22 @@ $parking->add_floor($floor2);
 $parking->add_floor($floor3);
 
 echo "\n".$parking->cars_count();        // 0
-/*
-$parking->capacity_count();    // 90
+echo "\n".$parking->capacity_count();    // 90
 
-$parking->park_cars(65);       // 0 (tutte entrano, dall'alto verso il basso)
-$parking->cars_distribution(); // [50,15,0]
+echo "\n".$parking->park_cars(65);       // 0 (tutte entrano, dall'alto verso il basso)
 
-$parking->park_cars(50);       // 25 auto avanzano
-$parking->cars_distribution(); // [50,30,10]
+echo "\n";
+var_dump($parking->cars_distribution()); // [50,15,0]
+
+echo "\n".$parking->park_cars(50);       // 25 auto avanzano
+echo "\n";
+
+var_dump($parking->cars_distribution()); // [50,30,10]
+
 
 $parking->leave_cars(15);      // rimuove a partire dal basso
+
+/*
 $parking->cars_distribution(); // [50,25,0]
 $parking->cars_count();        // 75
 
