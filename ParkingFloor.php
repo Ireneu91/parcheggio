@@ -4,6 +4,7 @@ class ParkingFloor{
 
     private int $cars = 0;
     private int $capacity;
+    private int $postiPrenotati = 0;
 
     // ----- costruttore
     public function __construct(int $num){
@@ -13,7 +14,7 @@ class ParkingFloor{
     //-------- metodi
 
     public function cars_count(): int{
-        return $this->cars;
+        return $this->cars + $this->postiPrenotati;
     }
 
     public function capacity_count(): int{
@@ -41,49 +42,43 @@ class ParkingFloor{
 
     // rende il numero di auto che non riesce a togliere
     public function leave_cars(int $num): int{
+        // togliere le auto che può togliere
+        // restituire quelle che non riesce a togliere
 
         // quelle che se ne vanno non possono essere più di quelle parcheggiate
         if($num > $this->cars){
             $differenza = $num - $this->cars;
+            // dopo avrò sicuramente 0 macchine
             $this->cars = 0;
+            // e devi dire quante macchine non sono riuscito a togliere
+
             return $differenza;
         }
         else
         // aggiorno le macchine facendo:
         // macchine parcheggiate - quelle che se ne vanno 
-        $this->cars - $num;
+        $this->cars = $this->cars - $num;
         return 0;   
     }
 
     
-    /*
-    public function cars_distribution(): array{
-        
-    }
-
+  
     public function add_reservation(): void{
-        
+        if($this->cars + $this->postiPrenotati != $this->capacity)
+        {$this->postiPrenotati++;}
+        else echo "\n parcheggio pieno, non puoi prenotare \n";
     }
 
+   
     public function reservation_count(): int{
-        
+        return $this->postiPrenotati;
     }
+
 
     public function remove_reservation(): void{
-        
+        if($this->postiPrenotati > 0){
+            $this->postiPrenotati--;
+        }
     }
 
-    public function open_floor($floor): void{
-        
-    }
-
-    public function close_floor($floor): void{
-        
-    }
-
-    public function report(): string{
-        
-    }
-
-    */
 }
