@@ -82,4 +82,8 @@ class ParkingFloor{
         }
     }
 
+    public function setOpenToFalse(): void{
+        $this->isOpen = false;
+    }
+
 }

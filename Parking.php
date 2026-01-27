@@ -83,12 +83,20 @@ class Parking{
 
 
     public function close_floor($floor): void{
-        $floor->isOpen = false;
+        $floor->setOpenToFalse();
         $carsReali = $floor->cars_count() - $floor->reservation_count();
-        $prenotazioni = $floor->reservation_count();
-        
-        foreach($this->floors as $floor){
 
+        // tolgo le prenotazioni con un ciclo perché le prende una per volta
+        $prenotazioni = $floor->reservation_count();
+        for($i = 0; $i < $prenotazioni; $i++){
+            $floor->remove_reservation();
+        }
+        
+        $floor->leave_cars($carsReali);
+
+        // adesso invece le aggiungo al piano successivo
+        foreach($this->floors as $floor){
+            
         }
     }
 
