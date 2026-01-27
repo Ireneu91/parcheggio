@@ -80,10 +80,16 @@ echo "\n".$floor1->reservation_count();  // 1
 
 echo "\n".$floor1->cars_count();         // 6 posti occupati
 
-/*
+
 $parking->add_reservation();   // uno dei posti del piano più in alto è riservato, solo se libero in questo momento altrimenti si va al piano successivo
 
+print_r($floor1);
+print_r($floor2);
+print_r($floor3);
+
 $parking->close_floor($floor1); // il piano viene chiuso temporaneamente, non accetta nuove auto, tutte le auto attuali vengono spostate verso altri piani, a partire dall'alto
+
+/*
 $parking->open_floor($floor1);  // il piano viene riaperto
 
 $floor1->report();             // stampa report formattato con numero posti liberi, posti prenotati, posti liberi

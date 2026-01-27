@@ -72,26 +72,28 @@ class Parking{
     }
 
 
-
-
-   /*
     public function add_reservation(): void{
-        
+        foreach($this->floors as $floor){
+            if($floor->cars_count() < $floor->capacity_count()){
+            $floor->add_reservation();
+            }
+            break;
+        }
     }
 
-    public function reservation_count(): int{
-        
-    }
-
-    public function remove_reservation(): void{
-        
-    }
-
-    public function open_floor($floor): void{
-        
-    }
 
     public function close_floor($floor): void{
+        $floor->isOpen = false;
+        $carsReali = $floor->cars_count() - $floor->reservation_count();
+        $prenotazioni = $floor->reservation_count();
+        
+        foreach($this->floors as $floor){
+
+        }
+    }
+
+    /*
+    public function open_floor($floor): void{
         
     }
 

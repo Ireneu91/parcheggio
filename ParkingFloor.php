@@ -5,6 +5,7 @@ class ParkingFloor{
     private int $cars = 0;
     private int $capacity;
     private int $postiPrenotati = 0;
+    private bool $isOpen = true;
 
     // ----- costruttore
     public function __construct(int $num){
