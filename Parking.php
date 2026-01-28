@@ -36,26 +36,16 @@ class Parking{
 
     // rende quelle che rimangono fuori
     public function park_cars(int $num): int{
-       
         foreach($this->floors as $floor){
-            $outCars = $floor->park_cars($num);
-            if($outCars == 0){
-                return 0;
-                }
-            else{ 
-                // di $num rimangono quelle che non sono entrate
-                $num = $outCars;
-                }
+            $num = $floor->park_cars($num);
         }
-        return $outCars;
+        return $num;
     }
 
     // rende il numero di auto che non riesce a togliere
     public function leave_cars(int $num): int{
-        $floors = array_reverse($this->floors);
-        foreach($floors as $floor){
-            $autoNonTolte = $floor->leave_cars($num);
-            $num = $autoNonTolte;
+        foreach(array_reverse($this->floors) as $floor){
+            $num = $floor->leave_cars($num);
         }
         return $num;
     }
@@ -72,32 +62,46 @@ class Parking{
     }
 
 
-    public function add_reservation(): void{
+    public function add_reservation(): bool{
         foreach($this->floors as $floor){
-            if($floor->cars_count() < $floor->capacity_count()){
-            $floor->add_reservation();
+            // se l'aggiunta al piano ritorno true
+            if($floor->add_reservation()){return true;}
             }
-            break;
-        }
+            // sennò si va al piano successivo
+            return false;
     }
 
 
     public function close_floor($floor): void{
+        // lo chiudiamo con il metodo ad hoc creato di là
         $floor->setOpenToFalse();
-        $carsReali = $floor->cars_count() - $floor->reservation_count();
+
+        $carsReali = $floor->cars_count();
 
         // tolgo le prenotazioni con un ciclo perché le prende una per volta
         $prenotazioni = $floor->reservation_count();
+
+        
         for($i = 0; $i < $prenotazioni; $i++){
             $floor->remove_reservation();
+            $this->add_reservation();
         }
-        
+
+        // tolgo le macchiene dal piano
         $floor->leave_cars($carsReali);
 
         // adesso invece le aggiungo al piano successivo
         foreach($this->floors as $floor){
-            
+            // quindi se il piano è aperto sposto lì macchine e prenotati
+            if($floor->isOpenFloor()){
+                // fo un ciclo perché sennò conta una prenotazione per volta
+                for($i = 0; $i < $prenotazioni; $i++){
+                    $floor->add_reservation();
+                }
+            }
         }
+        $this->park_cars($carsReali);
+                // devo prima capire quante ne rimangono fuori per vedere quante ne vanno nel prossimo piano
     }
 
     /*

@@ -53,42 +53,46 @@ echo "\n".$parking->cars_count();        // 75
 
 //------------------------------------------
 
-echo "\n".$floor1->cars_count();         // 0 posti occupati
+$floor1->cars_count();         // 0 posti occupati
 
 
 $floor1->add_reservation();    // uno dei posti del piano è riservato, non può essere usato
 
-echo "\n".$floor1->reservation_count();  // 1
+$floor1->reservation_count();  // 1
 
-echo "\n".$floor1->cars_count();         // 1 posti occupati
+$floor1->cars_count();         // 1 posti occupati
 
-echo "\n".$floor1->add_reservation();    // un nuovo posto del piano è riservato
+$floor1->add_reservation();    // un nuovo posto del piano è riservato
 
 
-echo "\n".$floor1->reservation_count();  // 2
+$floor1->reservation_count();  // 2
 
 $floor1->cars_count();         // 2 posti occupati
 
 $floor1->park_cars(5);         //
-echo "\n".$floor1->reservation_count();  // 2
+$floor1->reservation_count();  // 2
 
 
-echo "\n".$floor1->cars_count();         // 7 posti occupati
+$floor1->cars_count();         // 7 posti occupati
  
 $floor1->remove_reservation(); // uno dei posti del piano non è più riservato, può essere nuovamente usato
-echo "\n".$floor1->reservation_count();  // 1
+echo "\nPosti riservati: ".$floor1->reservation_count();  // 1
 
-echo "\n".$floor1->cars_count();         // 6 posti occupati
+echo "\nPosti occupati: ".$floor1->cars_count();         // 6 posti occupati
 
+echo "\n\n aggiungo una prenotazione: +1 \n";
 
 $parking->add_reservation();   // uno dei posti del piano più in alto è riservato, solo se libero in questo momento altrimenti si va al piano successivo
 
-print_r($floor1);
-
-
 $parking->close_floor($floor1); // il piano viene chiuso temporaneamente, non accetta nuove auto, tutte le auto attuali vengono spostate verso altri piani, a partire dall'alto
-
+$parking->park_cars(22);
 print_r($floor1);
+echo "secondo piano: \n";
+print_r($floor2);
+
+$parking->leave_cars(22);
+print_r($floor1);
+print_r($floor2);
 /*
 $parking->open_floor($floor1);  // il piano viene riaperto
 

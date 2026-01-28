@@ -15,7 +15,7 @@ class ParkingFloor{
     //-------- metodi
 
     public function cars_count(): int{
-        return $this->cars + $this->postiPrenotati;
+        return $this->cars;
     }
 
     public function capacity_count(): int{
@@ -24,20 +24,24 @@ class ParkingFloor{
 
     // rende quelle che rimangono fuori
     public function park_cars(int $num): int{
-        $empty_park_cars = $this->capacity - $this->cars;
+        if($this->isOpen){
+            $empty_park_cars = $this->capacity - $this->cars - $this->postiPrenotati;
+            
+            // non rimane fuori nessuno
+            if($empty_park_cars >= $num){
+                // alle macchine parcheggiate si aggiunge $num
+                $this->cars = $this->cars + $num;
+                return 0;
+            }
+    
+            // le macchine parcheggiate adesso sono uguali alla capienza meno i posti prenotati
+            $this->cars = $this->capacity - $this->postiPrenotati;
 
-        // non rimane fuori nessuno
-        if($empty_park_cars > $num){
-            // alle macchine parcheggiate si aggiunge $num
-            $this->cars = $this->cars + $num;
-            return 0;
+            return $num - $empty_park_cars; // * -1 per trasformare num negativo in positivo
         }
-  
-        // le macchine parcheggiate adesso sono uguali alla capienza
-        $this->cars = $this->capacity;
-
-        $empty_park_cars = $num - $empty_park_cars; 
-        return $empty_park_cars; // * -1 per trasformare num negativo in positivo
+        // se il piano è chiuso rendi tutte le macchine, perché non sei riuscito a parcheggiare
+        return $num;
+        
     }
 
 
@@ -64,10 +68,15 @@ class ParkingFloor{
 
     
   
-    public function add_reservation(): void{
-        if($this->cars + $this->postiPrenotati != $this->capacity)
-        {$this->postiPrenotati++;}
-        else echo "\n parcheggio pieno, non puoi prenotare \n";
+    public function add_reservation(): bool{
+        if($this->isOpen){
+            if($this->cars + $this->postiPrenotati < $this->capacity)
+                {
+                    $this->postiPrenotati++;
+                    return true;
+            }
+        }
+        return false;
     }
 
    
@@ -80,6 +89,10 @@ class ParkingFloor{
         if($this->postiPrenotati > 0){
             $this->postiPrenotati--;
         }
+    }
+
+    public function isOpenFloor(): bool{
+        return $this->isOpen;
     }
 
     public function setOpenToFalse(): void{
