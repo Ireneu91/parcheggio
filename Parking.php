@@ -73,12 +73,13 @@ class Parking{
         $floor->set_close();  // lo chiudiamo con il metodo ad hoc creato di là
         $carsReali = $floor->cars_count();
 
-        // tolgo le prenotazioni con un ciclo perché le prende una per volta
-        // meglio fare un while
         $prenotazioni = $floor->reservation_count();
-        for($i = 0; $i < $prenotazioni; $i++) {
+        // tolgo le prenotazioni con un ciclo perché le prende una per volta
+        $i = 0;
+        while($i < $prenotazioni) {   
             $floor->remove_reservation();
             $this->add_reservation();
+            $i++;
         }
         
         $floor->leave_cars($carsReali); // tolgo le macchiene dal piano
