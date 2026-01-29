@@ -4,7 +4,7 @@ class ParkingFloor{
 
     private int $capacity;
     private int $cars = 0; // cars non tiene conto anche dei posti prenotati
-    private int $reserved_seats = 0;
+    private int $reserved_spot = 0;
     private bool $is_open = true;
 
     //-------- costruttore ----------//
@@ -31,7 +31,7 @@ class ParkingFloor{
             return $num; // tutte le macchine, perché non sei riuscito a parcheggiare
         }
 
-        $empty_park_cars = $this->capacity - $this->cars - $this->reserved_seats;
+        $empty_park_cars = $this->capacity - $this->cars - $this->reserved_spot;
         if($empty_park_cars >= $num) { // se non rimane fuori nessuno
             $this->cars = $this->cars + $num; // alle macchine parcheggiate si aggiunge $num
             return 0;
@@ -62,8 +62,8 @@ class ParkingFloor{
         if(!$this->is_open) {
             return false;
         }
-        if($this->cars + $this->reserved_seats < $this->capacity) {
-            $this->reserved_seats++;
+        if($this->cars + $this->reserved_spot < $this->capacity) {
+            $this->reserved_spot++;
             return true;
         } else { 
             return false; 
@@ -71,13 +71,13 @@ class ParkingFloor{
     }
 
     public function reservation_count(): int {
-        return $this->reserved_seats;
+        return $this->reserved_spot;
     }
 
 
     public function remove_reservation(): void {
-        if($this->reserved_seats > 0) {
-            $this->reserved_seats--;
+        if($this->reserved_spot > 0) {
+            $this->reserved_spot--;
         }
     }
 

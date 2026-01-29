@@ -71,10 +71,10 @@ class Parking{
 
     public function close_floor($floor): void {
         $floor->set_close();  // lo chiudiamo con il metodo ad hoc creato di là
-        $carsReali = $floor->cars_count();
+        $cars_floor = $floor->cars_count(); // conto le auto
+        $prenotazioni = $floor->reservation_count(); // conto i posti prenotati
 
-        $prenotazioni = $floor->reservation_count();
-        // tolgo le prenotazioni con un ciclo perché le prende una per volta
+        // tolgo e aggiungo le prenotazioni con un ciclo perché le prende una per volta
         $i = 0;
         while($i < $prenotazioni) {   
             $floor->remove_reservation();
@@ -82,10 +82,8 @@ class Parking{
             $i++;
         }
         
-        $floor->leave_cars($carsReali); // tolgo le macchiene dal piano
-        $this->park_cars($carsReali); // adesso invece le aggiungo a un altro piano
-
-        // devo prima capire quante ne rimangono fuori per vedere quante ne vanno nel prossimo piano
+        $floor->leave_cars($cars_floor); // tolgo le macchiene dal piano
+        $this->park_cars($cars_floor); // adesso invece le aggiungo a un altro piano
     }
 
     /*
