@@ -33,10 +33,10 @@ class ParkingFloor{
 
         $empty_park_cars = $this->capacity - $this->cars - $this->reserved_spot;
         if($empty_park_cars >= $num) { // se non rimane fuori nessuno
-            $this->cars = $this->cars + $num; // alle macchine parcheggiate si aggiunge $num
+            $this->cars += $num; // alle macchine parcheggiate si aggiunge $num
             return 0;
         } else {
-            $this->cars = $this->capacity;  // le macchine parcheggiate adesso sono uguali alla capienza
+            $this->cars += $empty_park_cars;  // le macchine parcheggiate adesso sono uguali ai posti disponibili
             return $num - $empty_park_cars; // * -1 per trasformare num negativo in positivo
         }
     }
@@ -84,8 +84,8 @@ class ParkingFloor{
 
     //--- aprire/chiudere il piano ---//
 
-    public function is_openFloor(): bool {
-        return $this->is_open;
+    public function set_open_floor(): void {
+        $this->is_open = true;
     }
 
     public function set_close(): void {

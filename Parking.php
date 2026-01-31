@@ -32,9 +32,15 @@ class Parking{
         return $capacity;
     }
 
+
+    /*-----park_cars adesso non funziona! Non rende le rimanenti al piano successivo! */
+
     // rende quelle che rimangono fuori
     public function park_cars(int $num): int {
         foreach($this->floors as $floor) {
+            if($num <= 0){
+                return 0;
+            }
             $num = $floor->park_cars($num);
         }
         return $num;
@@ -86,11 +92,12 @@ class Parking{
         $this->park_cars($cars_floor); // adesso invece le aggiungo a un altro piano
     }
 
-    /*
+ 
     public function open_floor($floor): void{
-        
+        $floor->set_open_floor();
     }
 
+    /*
     public function report(): string{
         
     }

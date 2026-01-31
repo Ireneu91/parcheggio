@@ -69,10 +69,11 @@ $floor1->reservation_count();  // 2
 
 $floor1->cars_count();         // 2 posti occupati
 
-$floor1->park_cars(5);         //
+echo $floor1->park_cars(55);         //
 $floor1->reservation_count();  // 2
-
-
+print_r($floor1);
+print_r($floor2);
+/*
 $floor1->cars_count();         // 7 posti occupati
  
 $floor1->remove_reservation(); // uno dei posti del piano non è più riservato, può essere nuovamente usato
@@ -93,9 +94,9 @@ print_r($floor2);
 $parking->leave_cars(22);
 print_r($floor1);
 print_r($floor2);
-/*
-$parking->open_floor($floor1);  // il piano viene riaperto
 
+$parking->open_floor($floor1);  // il piano viene riaperto
+/*
 $floor1->report();             // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
 $parking->report();            // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
 
