@@ -47,13 +47,44 @@ class Parking{
     }
 
     // rende il numero di auto che non riesce a togliere
-    public function leave_cars(int $num): int {
-        foreach(array_reverse($this->floors) as $floor) {
-            $num = $floor->leave_cars($num);
-        }
+    public function leave_cars(int $num, string $fromWhere): int {
+        switch($fromWhere){  
+            case "bottom":
+             foreach(array_reverse($this->floors) as $floor) {
+                $num = $floor->leave_cars($num);
+                }  
+             break;
+            case "top":
+                foreach(($this->floors) as $floor) {
+                $num = $floor->leave_cars($num);
+                } 
+                
+             break;
+            case "random":
+                /*
+                // ----- ricorsivo in coda: ----- //
+                // La funzione passa il risultato parziale alla chiamata successiva (tramite un "accumulatore")
+                */
+                
+                foreach($this->floors as $floor) {
+                // capire qual è il piano con più macchine parcheggiate
+                    $moreCars = max($this->cars_distribution());
+                    $num = $moreCars->leave_cars($num);
+                    
+                // dopo il piano più pieno va in uno a caso o in quello leggermente meno pieno?
+                // $x = rand(0, count($this->floors));
+                }
+             break;
+             // poi dovrà essere testabile (guardare slides, si parla di numeri random)
+            }
         return $num;
     }
 
+    private function indexFloor($array): int {
+        // può essere un metodo statico
+        $index = array_rand($array);
+        return $index;  // indice stringa da cui prendo randomicamente
+    }
 
     public function cars_distribution(): array {
         $distribution = [];
@@ -97,11 +128,19 @@ class Parking{
         $floor->set_open_floor();
     }
 
-    /*
-    public function report(): string{
-        
+
+    public function report() {
+        $numero = 1;
+        foreach($this->floors as $floor){
+            $empty_park_cars = $floor->capacity_count() - $floor->cars_count() - $floor->reservation_count();
+            echo "Piano ".$numero."\n";
+            echo "Posti occupati: ".$floor->cars_count()."\n";
+            echo "Posti liberi: ".$empty_park_cars."\n";
+            echo "Posti prenotati: ".$floor->reservation_count()."\n\n";
+            $numero = $numero + 1; // lo aggiorno per incrementarlo in ogni piano
+            }
     }
 
-    */
+
 
 }

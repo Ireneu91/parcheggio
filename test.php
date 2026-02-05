@@ -45,5 +45,5 @@ $parking->open_floor($floor2);
 
 var_dump($parking);
 $floor2->add_reservation();
-$floor2->park_cars(50);
+$parking->park_cars(50);
 var_dump($parking);

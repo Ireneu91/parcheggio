@@ -92,4 +92,10 @@ class ParkingFloor{
         $this->is_open = false;
     }
 
+    public function report() {
+        $empty_park_cars = $this->capacity - $this->cars - $this->reserved_spot;
+        echo "Posti liberi: ".$empty_park_cars."\n";
+        echo "Posti prenotati: ".$this->reservation_count()."\n\n";
+    }
+
 }

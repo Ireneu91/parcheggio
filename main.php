@@ -52,7 +52,7 @@ echo "\n".$parking->cars_count();        // 75
 */
 
 //------------------------------------------
-
+/*
 $floor1->cars_count();         // 0 posti occupati
 
 
@@ -73,7 +73,7 @@ echo $floor1->park_cars(55);         //
 $floor1->reservation_count();  // 2
 print_r($floor1);
 print_r($floor2);
-/*
+
 $floor1->cars_count();         // 7 posti occupati
  
 $floor1->remove_reservation(); // uno dei posti del piano non è più riservato, può essere nuovamente usato
@@ -87,21 +87,26 @@ $parking->add_reservation();   // uno dei posti del piano più in alto è riserv
 
 $parking->close_floor($floor1); // il piano viene chiuso temporaneamente, non accetta nuove auto, tutte le auto attuali vengono spostate verso altri piani, a partire dall'alto
 $parking->park_cars(22);
-print_r($floor1);
-echo "secondo piano: \n";
-print_r($floor2);
 
-$parking->leave_cars(22);
+// $parking->leave_cars(22);
 print_r($floor1);
 print_r($floor2);
 
 $parking->open_floor($floor1);  // il piano viene riaperto
-/*
-$floor1->report();             // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
-$parking->report();            // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
 
-$parking->leave_cars(15, "bottom"); // rimuove a partire dal basso, nessun cambiamento
-$parking->leave_cars(15, "top");    // rimuove a partire dall'alto
-$parking->leave_cars(15, "random"); // rimuove random, in maniera pesata (ovvero è più probabile per i piani con più macchine)
+$floor1->report();             // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
 
 */
+$parking->park_cars(80);
+$parking->report();            // stampa report formattato con numero posti liberi, posti prenotati, posti liberi
+
+echo $parking->leave_cars(15, "bottom"); // rimuove a partire dal basso, nessun cambiamento
+echo "\n\n";
+$parking->report();     
+
+echo $parking->leave_cars(15, "top");    // rimuove a partire dall'alto
+echo "\n\n";
+$parking->report();  
+
+echo $parking->leave_cars(15, "random"); // rimuove random, in maniera pesata (ovvero è più probabile per i piani con più macchine)
+
