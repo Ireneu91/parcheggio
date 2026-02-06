@@ -109,4 +109,8 @@ echo "\n\n";
 $parking->report();  
 
 echo $parking->leave_cars(15, "random"); // rimuove random, in maniera pesata (ovvero è più probabile per i piani con più macchine)
-
+echo "\n\n";
+$parking->report();  
+echo $parking->leave_cars(15, "random"); // rimuove random, in maniera pesata (ovvero è più probabile per i piani con più macchine)
+echo "\n\n";
+$parking->report(); 

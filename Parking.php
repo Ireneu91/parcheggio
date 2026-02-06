@@ -62,28 +62,86 @@ class Parking{
              break;
             case "random":
                 /*
-                // ----- ricorsivo in coda: ----- //
-                // La funzione passa il risultato parziale alla chiamata successiva (tramite un "accumulatore")
+                // - Trovo il piano che ha attualmente più auto.
+                   - Tolgo una (o un piccolo gruppo di) auto da quel piano.
+                   - Ripeto l'operazione: ricalcolo chi è il più pieno (perché dopo il prelievo il "vincitore" potrebbe essere cambiato) e tolgo la prossima auto.
+                //
                 */
-                
-                foreach($this->floors as $floor) {
-                // capire qual è il piano con più macchine parcheggiate
-                    $moreCars = max($this->cars_distribution());
-                    $num = $moreCars->leave_cars($num);
+                $num = $this->tailRecursion($num);
+
+                /* ------------- inizialmente era così, poi ho usato la funzione ricorsiva --------- */
+
+                // while ($num > 0){
+                //     $distribution = $this->cars_distribution();
+                //     $mostCars = max($distribution);
+                //     $mostCarIndex = array_search($mostCars, $distribution);
+                //     $risultato = $this->floors[$mostCarIndex]->leave_cars(1); // ne tolgo una alla volta così da ricalcolare via via quale diventa il piano con più macchine
                     
-                // dopo il piano più pieno va in uno a caso o in quello leggermente meno pieno?
-                // $x = rand(0, count($this->floors));
-                }
-             break;
+                //     if ($risultato == 1) { // se il piano è vuoto, si esce dal loop
+                //         break; 
+                //     }
+                //     $num--; // Aggiorna il conteggio totale delle auto rimaste da togliere
+                // }
+
+                break;          
+
              // poi dovrà essere testabile (guardare slides, si parla di numeri random)
             }
         return $num;
     }
 
-    private function indexFloor($array): int {
-        // può essere un metodo statico
-        $index = array_rand($array);
-        return $index;  // indice stringa da cui prendo randomicamente
+    // private function indexFloor($array): int {
+    //     // può essere un metodo statico
+    //     $index = array_search($array, $array);
+    //     return $index;  // indice stringa da cui prendo randomicamente
+    // }
+
+
+    // ----- ricorsivo in coda: ----- //
+    // l'ultima operazione della funzione è la chiamata a se stessa, passando il risultato parziale (lo stato aggiornato) come argomento della chiamata successiva (tramite un "accumulatore")
+    public function tailRecursion(int $num){
+        if($num <= 0){
+            return 0;
+        }
+        $distribution = $this->cars_distribution();
+        $totalCars = array_sum($distribution);
+        if($totalCars == 0){
+            return $num; // il parcheggio è vuoto, quindi non ne abbiamo tolta nessuna
+        }
+
+        /*------ non usiamo più max(), ma rand() ---------- */
+        // $mostCars = max($distribution);
+        // $mostCarIndex = array_search($mostCars, $distribution);
+
+        // 1. Generiamo un "ticket" casuale tra 1 e il totale delle auto nel garage
+        $ticket = rand(1, $totalCars); // quindi abbiamo un randomico tra le macchine di tutti i piani
+        $accumulator = 0;
+        $selectedFloorIndex = 0;
+
+        // --------- esempio:
+        // Piano 0: 5 auto (Soglia: 5)
+        // Piano 1: 80 auto (Soglia: 5 + 80 = 85)
+        // Piano 2: 15 auto (Soglia: 85 + 15 = 100)
+        //
+        // Se rand() estrae 3, il primo if (3 <= 5) è vero ----------> Piano 0.
+        // Se rand() estrae 50, il primo if (50 <= 5) è falso, ma il secondo if (50 <= 85) è vero ----> Piano 1.
+
+        // 2. Cerchiamo a quale piano corrisponde il ticket
+        foreach ($distribution as $index => $count) {
+            $accumulator += $count; // aggiungiamo le auto del piano all'accumulatore per creare la "soglia"
+            if ($ticket <= $accumulator) { // se il ticket è <= alla soglia attuale riguarda questo piano
+                $selectedFloorIndex = $index;
+                break; // Abbiamo trovato il piano, usciamo dal foreach
+            }
+        }
+
+        $risultato = $this->floors[$selectedFloorIndex]->leave_cars(1); // ne tolgo una alla volta così da ricalcolare via via quale diventa il piano con più macchine
+
+        if($risultato === 0){
+           return $this->tailRecursion($num - 1); // Se il prelievo è riuscito, richiamiamo la funzione passando $num diminuito di 1.
+        } else {
+            return $this->tailRecursion($num); // Se il prelievo è fallito (caso raro se il garage non è vuoto), riproviamo senza diminuire $num, così da ricalcolare il piano.
+        }
     }
 
     public function cars_distribution(): array {
