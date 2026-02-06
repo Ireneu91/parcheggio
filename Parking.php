@@ -97,12 +97,21 @@ class Parking{
     // }
 
 
-    // ----- ricorsivo in coda: ----- //
+    // ----- RICORSIVO IN CODA: ----- //
     // l'ultima operazione della funzione è la chiamata a se stessa, passando il risultato parziale (lo stato aggiornato) come argomento della chiamata successiva (tramite un "accumulatore")
-    public function tailRecursion(int $num){
+
+    // Per rendere la randomica TESTABILE, aggiungiamo il parametro $generatore. 
+    // Di default lo impostiamo su 'rand', che è la funzione standard di PHP.
+    public function tailRecursion(int $num, ?callable $generator = null){
         if($num <= 0){
             return 0;
         }
+
+        // Se non è stata passata una funzione, usiamo 'rand' di default
+        if ($generator === null) {
+            $generator = 'rand';
+        }
+
         $distribution = $this->cars_distribution();
         $totalCars = array_sum($distribution);
         if($totalCars == 0){
@@ -114,7 +123,7 @@ class Parking{
         // $mostCarIndex = array_search($mostCars, $distribution);
 
         // 1. Generiamo un "ticket" casuale tra 1 e il totale delle auto nel garage
-        $ticket = rand(1, $totalCars); // quindi abbiamo un randomico tra le macchine di tutti i piani
+        $ticket = $generator(1, $totalCars); // quindi abbiamo un randomico tra le macchine di tutti i piani
         $accumulator = 0;
         $selectedFloorIndex = 0;
 
@@ -138,9 +147,9 @@ class Parking{
         $risultato = $this->floors[$selectedFloorIndex]->leave_cars(1); // ne tolgo una alla volta così da ricalcolare via via quale diventa il piano con più macchine
 
         if($risultato === 0){
-           return $this->tailRecursion($num - 1); // Se il prelievo è riuscito, richiamiamo la funzione passando $num diminuito di 1.
+           return $this->tailRecursion($num - 1, $generator); // Se il prelievo è riuscito, richiamiamo la funzione passando $num diminuito di 1.
         } else {
-            return $this->tailRecursion($num); // Se il prelievo è fallito (caso raro se il garage non è vuoto), riproviamo senza diminuire $num, così da ricalcolare il piano.
+            return $this->tailRecursion($num, $generator); // Se il prelievo è fallito (caso raro se il garage non è vuoto), riproviamo senza diminuire $num, così da ricalcolare il piano.
         }
     }
 
