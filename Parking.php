@@ -100,8 +100,9 @@ class Parking{
     // ----- RICORSIVO IN CODA: ----- //
     // l'ultima operazione della funzione è la chiamata a se stessa, passando il risultato parziale (lo stato aggiornato) come argomento della chiamata successiva (tramite un "accumulatore")
 
-    // Per rendere la randomica TESTABILE, aggiungiamo il parametro $generatore. 
-    // Di default lo impostiamo su 'rand', che è la funzione standard di PHP.
+    // Per rendere la randomica TESTABILE con dependency injiection, aggiungiamo il parametro $generatore. 
+    // ?callable: Il punto di domanda indica che il parametro può essere o una funzione o null..
+    // Perché PHP non accetta stringhe nei valori di default dei parametri, quindi assegnamo 'rand' subito dopo
     public function tailRecursion(int $num, ?callable $generator = null){
         if($num <= 0){
             return 0;
@@ -109,7 +110,7 @@ class Parking{
 
         // Se non è stata passata una funzione, usiamo 'rand' di default
         if ($generator === null) {
-            $generator = 'rand';
+            $generator = 'rand'; 
         }
 
         $distribution = $this->cars_distribution();
